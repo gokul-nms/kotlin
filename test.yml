@@ -1,0 +1,32 @@
+name: Run Calculator Tests
+
+on:
+  push:
+    branches:
+      - main  # Runs when code is pushed to `main`
+  pull_request:
+    branches:
+      - main  # Runs on pull requests to `main`
+
+jobs:
+  build:
+    runs-on: ubuntu-latest  # Use Ubuntu as the build environment
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4  # Pulls your code from GitHub
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '17'  # Ensure this matches your local JDK version
+
+      - name: Set up Gradle
+        uses: gradle/gradle-build-action@v3
+
+      - name: Grant execute permissions to Gradle wrapper
+        run: chmod +x gradlew  # Make sure Gradle wrapper is executable
+
+      - name: Build and Run Tests
+        run: ./gradlew clean build  # Builds and runs tests
